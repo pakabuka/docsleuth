@@ -805,7 +805,7 @@
           buttonContainer.appendChild(proceedSpinner);
     
           // Enhanced prompt: instruct the AI to use original headers if available.
-          const prompt = `Generate an extremely detailed, structured summary of the following PDF content. Divide the summary into multiple sections; if a section is large, subdivide it into subsections. If the original document contains clearly labeled section headers or sub-headers (for example, "Introduction", "Literature Review", etc.), organize the summary according to those headers. For each section or subsection, include a header, well-formatted content (using bullet points, paragraphs, etc.), and a "page" field indicating the approximate page number from the original PDF where that content appears (except for the Analysis section). Output the summary as valid JSON strictly following this format (and nothing else):
+          const prompt = `Generate an extremely, super detailed, structured summary of the following PDF content. Divide the summary into multiple sections; if a section is large, subdivide it into subsections. If the original document contains clearly labeled section headers or sub-headers (for example, "Introduction", "Literature Review", etc.), organize the summary according to those headers. For each section or subsection, include a header, well-formatted content (using bullet points, paragraphs, etc.), and a "page" field indicating the approximate page number from the original PDF where that content appears (except for the Analysis section). Output the summary as valid JSON strictly following this format (and nothing else):
 
 {
   "title": "Summary of ${file.name}",
@@ -1026,20 +1026,23 @@ ${cleanedText}`;
     }
     
     function downloadFormattedSummary(summary, format) {
-      let htmlContent = "";
-      if (format === "word") { htmlContent = generateWordDocumentHTML(summary); }
-      else { htmlContent = generateDetailedSummaryHTML(summary); }
-      const blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "summary.doc";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-    
+  let htmlContent = "";
+  if (format === "word") { 
+    htmlContent = generateWordDocumentHTML(summary); 
+  } else { 
+    htmlContent = generateDetailedSummaryHTML(summary); 
+  }
+  const blob = new Blob(['\ufeff', htmlContent], { type: 'application/msword' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  // Use the summary title (which includes the PDF's file name) for the download name.
+  a.download = summary.title.replace(/\s+/g, '_') + ".doc";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
     /********************************************************************
      * Display Summary and PDF Viewer with Zoom Controls & Chatbot
      ********************************************************************/
