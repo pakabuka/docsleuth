@@ -66,13 +66,14 @@
       z-index: 2000;
     }
     .modal-content {
-      background: #fff;
+      background: rgba(255, 255, 255, 0.9);
       padding: 20px 30px;
       border-radius: 8px;
       text-align: center;
       max-width: 400px;
       width: 90%;
       animation: modalIn 0.5s ease-out;
+      border: 2px solid #fff;
     }
     @keyframes modalIn {
       from { opacity: 0; transform: scale(0.8); }
@@ -82,12 +83,12 @@
       from { opacity: 1; transform: scale(1); }
       to { opacity: 0; transform: scale(0.8); }
     }
-    .closing { animation: modalOut 0.5s ease-in forwards; }
+    .closing { animation: modalOut 0.3s ease-in forwards; }
     .modal-content input {
       width: 100%; padding: 10px; margin: 10px 0; font-size: 16px;
     }
     .disclaimer { font-size: 14px; color: #666; margin-bottom: 10px; }
-    /* Header Styles (fixed height) */
+    /* Header Styles */
     header {
       position: relative;
       text-align: center;
@@ -96,14 +97,14 @@
       color: #fff;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
       overflow: hidden;
-      height: 80px; /* Fixed height */
+      height: 80px;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      margin-bottom: 20px;
     }
     header h1 {
       font-size: 32px; margin: 0;
-      font-family: 'Roboto', sans-serif;
       animation: zoomInOut 5s infinite;
       position: relative; z-index: 1;
     }
@@ -111,7 +112,6 @@
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.1); }
     }
-    /* Subtitle container has fixed height so header doesn't collapse */
     #header-subtitle {
       font-size: 16px;
       margin-top: 5px;
@@ -119,37 +119,38 @@
       color: #e0e0e0;
       position: relative;
       z-index: 1;
-      height: 20px; /* Reserve space */
+      height: 20px;
     }
-    /* Container for pages */
-    .container {
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 20px;
-      background: rgba(255,255,255,0.85);
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      opacity: 0;
-      animation: fadeIn 0.8s forwards;
+    /* Front Page Wrapper */
+    #front-page-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    #main-page {
+      max-width: 600px;
+      margin: 0 auto;
     }
-    /* Drag & Drop Area */
+    /* Drag & Drop Area modifications */
     #drop-area {
       border: 2px dashed rgba(255,255,255,0.5);
       border-radius: 10px;
       padding: 40px;
       text-align: center;
-      background: rgba(255,255,255,0.1);
+      background: transparent !important;
       transition: background 0.3s, border-color 0.3s;
       cursor: pointer;
       margin-bottom: 20px;
     }
-    #drop-area p { font-size: 18px; margin-bottom: 20px; color: #001f3f; }
-    #drop-area:hover { background: rgba(255,255,255,0.2); }
-    /* File List */
+    #drop-area p { font-size: 18px; margin-bottom: 20px; color: #fff; }
+    #drop-area:hover { background: transparent !important; }
+    /* White border for buttons */
+    #drop-area .btn, #summary-page .btn {
+      border: 2px solid #fff;
+    }
+    /* File List and other elements remain unchanged */
     #file-list { margin-top: 20px; }
     .file-item {
       background: #fff;
@@ -166,7 +167,7 @@
     }
     .file-item:hover { transform: translateY(-2px); }
     .file-item .icon { font-size: 50px; }
-    .file-details { flex: 1; position: relative; }
+    .file-details { flex: 1; }
     .file-details p { margin: 3px 0; font-size: 15px; }
     .progress-container {
       background: #e0e0e0;
@@ -174,7 +175,6 @@
       overflow: hidden;
       margin: 10px 0;
       height: 20px;
-      position: relative;
     }
     .progress-bar {
       width: 0%;
@@ -198,7 +198,7 @@
       100% { opacity: 0; transform: scale(0.5) rotate(45deg); }
     }
     .removing { animation: removeAnimation 0.5s forwards; }
-    /* Button Container & Styles */
+    /* Button styles */
     .button-container { margin-top: 10px; }
     .btn {
       background-color: #001f3f;
@@ -213,112 +213,80 @@
     }
     .btn:hover { background-color: #003366; transform: scale(1.05); }
     .btn:disabled { background-color: #aaa; cursor: not-allowed; }
-    /* In file controls, the Proceed button is shown only after processing,
-       and the View Summary button is hidden until the AI finishes rendering */
-    /* Summary Page & Dual Layout */
-    #summary-page { display: none; }
-    #summary-content { margin-top: 20px; }
-    .summary-container {
-      display: flex;
+    /* Summary Page – using the entire page as container */
+    #summary-page {
+      display: none;
+      background: transparent;
+      padding: 20px 20px 0 20px;  /* Removed bottom padding */
+      color: #fff;
+      min-height: 100vh;
+      box-sizing: border-box;
+      flex-direction: row;
       gap: 20px;
-      height: 700px;  /* Changed from 600px to 700px */
-    }
-    .summary-left { flex: 1; overflow-y: auto; padding-right: 10px; }
-    .summary-right {
-      flex: 1;
-      overflow-y: auto;
-      border-left: 1px solid #e0e0e0;
-      padding-left: 20px;
       position: relative;
     }
-    /* PDF Viewer Container with smooth scrolling and transition */
-    #pdf-viewer-container {
-      background: rgba(255,255,255,0.8);
-      padding: 10px;
-      border-radius: 10px;
-      scroll-behavior: smooth;
-      transition: transform 0.3s ease;
+    /* When summary page is active it is a flex container */
+    #summary-page.flex {
+      display: flex;
     }
-    /* Download Button Placement */
-    .summary-controls { margin-top: 20px; text-align: left; }
-    .summary-controls button {
-      background-color: #001f3f;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 5px;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-      cursor: pointer;
+    /* Back Button – positioned at top left and no overlap with content */
+    #back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 8px 12px;
+      font-size: 14px;
+      z-index: 1001;
     }
-    .summary-controls button:hover {
-      background-color: #003366;
-      transform: scale(1.05);
+    /* Summary columns: fixed height to fill viewport */
+    .summary-left {
+      flex: 1;
+      height: calc(100vh - 80px);
+      overflow-y: auto;
+      padding: 70px 10px 10px 10px;
     }
-    /* Sticky Zoom Controls */
-    .zoom-controls {
-      position: sticky;
-      top: 10px;
-      z-index: 10;
-      padding: 5px;
+    .summary-right {
+      flex: 1;
+      height: calc(100vh - 80px);
+      position: relative;
     }
-    .zoom-controls button {
-      background-color: #001f3f;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      padding: 5px 10px;
-      margin-right: 5px;
-      cursor: pointer;
+    /* PDF viewer wrapper: remove extra top padding */
+    #pdf-viewer-wrapper {
+      max-height: 100%;
+      overflow-y: auto;
+      position: relative;
+      padding-top: 0;
     }
-    .zoom-controls button:hover { background-color: #003366; }
-    /* Summary Sections */
-    .section {
-      padding: 15px;
-      border: 1px solid #e0e0e0;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      background: #f9f9f9;
-      transition: background 0.3s, transform 0.2s;
-      cursor: pointer;
+    /* White separation line between summary sections */
+    .summary-left .section:not(:last-child) {
+      border-bottom: 1px solid #fff;
+      padding-bottom: 20px;
+      margin-bottom: 20px;
     }
-    .section:hover { background: #f0f0f0; transform: translateX(5px); }
-    .section.analysis {
-      background: #f0fff0;
-      border: 1px solid #28a745;
-      color: #28a745;
-      cursor: default;
-    }
-    .summary-left ul { padding-left: 20px; margin: 5px 0; }
-    .summary-left li { margin-bottom: 5px; }
-    /* Subsections styling */
-    .subsections {
-      margin-top: 10px;
-      padding-left: 15px;
-      border-left: 2px dashed #ccc;
-      display: none;
-    }
-    .subsection { margin-bottom: 10px; }
-    .subsection h4 {
-      margin: 0 0 5px 0;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: 500;
-    }
-    /* Toggle icon for sections with subsections */
-    .toggle-icon {
-      margin-right: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    /* Styled approximate page hyperlink */
+    /* Page link styling: white text */
     .page-link {
-      color: #001f3f;
+      color: #fff;
       text-decoration: underline;
       cursor: pointer;
     }
-    .page-link:hover { color: #003366; }
-    /* Chatbot Styles */
+    .page-link:hover { color: #f0f0f0; }
+    /* Fade-in Animation for page transitions */
+    @keyframes fadeInPage {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in {
+      animation: fadeInPage 0.6s ease-out;
+    }
+    /* Fade-out Animation for back transition */
+    @keyframes fadeOutPage {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    .fade-out {
+      animation: fadeOutPage 0.3s ease-out forwards;
+    }
+    /* Chatbot Styles (unchanged except z-index bump for the toggle) */
     .chatbot-container {
       width: 350px;
       max-height: 500px;
@@ -392,7 +360,6 @@
       cursor: pointer;
       font-size: 16px;
     }
-    /* Chatbot Toggle */
     .chatbot-toggle {
       position: fixed;
       bottom: 20px;
@@ -408,7 +375,7 @@
       cursor: pointer;
       font-size: 24px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      z-index: 1000;
+      z-index: 3000;
       transition: transform 0.2s ease;
     }
     .chatbot-toggle:active { transform: scale(0.9); }
@@ -430,18 +397,28 @@
       align-self: flex-start;
     }
     .chatbot-message.typing { font-style: italic; color: #999; }
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 10px;
-      background: inherit;
-      color: #fff;
-      font-size: 14px;
+    /* Info Button Styles */
+    #info-button {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      z-index: 100;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: rgba(128,128,128,0.5);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 3000;
+    }
+    #drop-area.highlight {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #fff;
+      transform: scale(1.02);
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
     }
   </style>
 </head>
@@ -462,32 +439,40 @@
     </div>
   </div>
 
-  <!-- Front Page Header with Starry Animation -->
-  <header>
-    <h1>DocSleuth</h1>
-    <p id="header-subtitle">Uncover insights effortlessly</p>
-  </header>
-
-  <!-- Main Page -->
-  <div class="container" id="main-page">
-    <div id="drop-area">
-      <p>Drag &amp; drop your PDF files here</p>
-      <button id="fileSelect" class="btn">Select Files</button>
-      <input type="file" id="fileElem" multiple accept="application/pdf" style="display:none;">
+  <!-- Info Modal -->
+  <div id="info-modal" class="modal">
+    <div class="modal-content">
+      <h2>About DocSleuth</h2>
+      <p>DocSleuth is a powerful tool that extracts text from PDF documents using advanced OCR technology and then generates detailed, structured summaries with AI. It helps you quickly uncover insights, analyze content, and interact with your documents—all while ensuring your privacy. You can also chat with the AI about your document.</p>
+      <p>We do not collect any user data.</p>
+      <p>© 2025 Frederick Liu. All rights reserved.</p>
+      <button id="info-close" class="btn">Close</button>
     </div>
-    <div id="file-list"></div>
   </div>
 
-  <!-- Summary Page (hidden by default) -->
-  <div class="container" id="summary-page">
-    <button id="back-button" class="btn">← Back to Files</button>
-    <div id="summary-content"></div>
-  </div>
+  <!-- Info Button -->
+  <div id="info-button">i</div>
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2025 Frederick Liu. All rights reserved.</p>
-  </footer>
+  <!-- Front Page Wrapper -->
+  <div id="front-page-wrapper">
+    <header>
+      <h1>DocSleuth</h1>
+      <p id="header-subtitle">Uncover insights effortlessly</p>
+    </header>
+
+    <!-- Summary Page – used as the whole page container when active -->
+    <div class="container" id="summary-page"></div>
+
+    <!-- Main Page -->
+    <div class="container" id="main-page">
+      <div id="drop-area">
+        <p>Drag &amp; drop your PDF files here</p>
+        <button id="fileSelect" class="btn">Select Files</button>
+        <input type="file" id="fileElem" multiple accept="application/pdf" style="display:none;">
+      </div>
+      <div id="file-list"></div>
+    </div>
+  </div>
 
   <script>
     // Global variable for the token.
@@ -523,10 +508,12 @@
       }
       const isValid = await validateToken(token);
       if (isValid) {
-        const modalContent = document.querySelector(".modal-content");
+        const modalContent = document.querySelector("#token-modal .modal-content");
         modalContent.classList.add("closing");
-        modalContent.addEventListener("animationend", () => {
+        modalContent.addEventListener("animationend", function handler() {
           document.getElementById("token-modal").style.display = "none";
+          modalContent.classList.remove("closing");
+          modalContent.removeEventListener("animationend", handler);
         });
         OPENAI_API_KEY = token;
         sessionStorage.setItem("openToken", token);
@@ -534,6 +521,20 @@
         errorMsg.textContent = "Invalid API Key. Please try again.";
         errorMsg.style.display = "block";
       }
+    });
+
+    // Info Modal handling with animated close
+    document.getElementById("info-button").addEventListener("click", () => {
+      document.getElementById("info-modal").style.display = "flex";
+    });
+    document.getElementById("info-close").addEventListener("click", () => {
+      const infoModalContent = document.querySelector("#info-modal .modal-content");
+      infoModalContent.classList.add("closing");
+      infoModalContent.addEventListener("animationend", function handler() {
+        document.getElementById("info-modal").style.display = "none";
+        infoModalContent.classList.remove("closing");
+        infoModalContent.removeEventListener("animationend", handler);
+      });
     });
     
     /********************************************************************
@@ -582,9 +583,6 @@
     const fileList = document.getElementById('file-list');
     const mainPage = document.getElementById('main-page');
     const summaryPage = document.getElementById('summary-page');
-    const summaryContent = document.getElementById('summary-content');
-    const backButton = document.getElementById('back-button');
-    
     const filesData = {};
     let pdfScale = 1.2;
     let currentDocumentOriginalText = "";
@@ -595,11 +593,21 @@
      ********************************************************************/
     fileSelect.addEventListener('click', () => fileElem.click());
     fileElem.addEventListener('change', handleFiles);
-    ['dragenter', 'dragover'].forEach(eventName => {
-      dropArea.addEventListener(eventName, (e) => { e.preventDefault(); dropArea.classList.add('highlight'); });
+    dropArea.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      dropArea.classList.add('highlight');
     });
-    ['dragleave', 'drop'].forEach(eventName => {
-      dropArea.addEventListener(eventName, (e) => { e.preventDefault(); dropArea.classList.remove('highlight'); });
+    dropArea.addEventListener('dragleave', function(e) {
+      e.preventDefault();
+      dropArea.classList.remove('highlight');
+    });
+    dropArea.addEventListener('drop', function(e) {
+      e.preventDefault();
+      dropArea.classList.remove('highlight');
+      const files = e.dataTransfer.files;
+      if (files && files.length > 0) {
+        handleFiles({ target: { files: files } });
+      }
     });
     
     /********************************************************************
@@ -635,19 +643,21 @@
       fileItem.className = 'file-item';
       fileItem.id = fileId;
       fileItem.innerHTML = `
-        <span class="remove-file" title="Remove File">🗑️</span>
+        <span class="remove-file" title="Remove File">x</span>
         <div class="icon">📄</div>
         <div class="file-details">
           <p><strong>${file.name}</strong></p>
-          <p>${(file.size / 1024).toFixed(2)} KB</p>
+          <p>
+            ${(file.size / 1024).toFixed(2)} KB
+            <span class="token-info" id="token-info-${fileId}" style="font-size: 12px; color: #555; margin-left: 10px;">
+              Tokens: 0 | Cost: $0.00
+            </span>
+          </p>
           <div class="progress-container">
             <div class="progress-bar" id="progress-${fileId}">0%</div>
           </div>
-          <div class="token-info" id="token-info-${fileId}" style="position: absolute; bottom: 5px; right: 10px; font-size: 12px; color: #555;">
-            Tokens: 0 | Cost: $0.00
-          </div>
           <div class="button-container">
-            <button id="submit-btn-${fileId}" class="btn">Submit</button>
+            <button id="submit-btn-${fileId}" class="btn">Evaluate</button>
             <button id="proceed-btn-${fileId}" class="btn" style="display:none;">Proceed</button>
             <button id="summary-btn-${fileId}" class="btn" style="display:none;">View Summary</button>
           </div>
@@ -667,8 +677,7 @@
       
       const submitBtn = document.getElementById(`submit-btn-${fileId}`);
       submitBtn.addEventListener('click', () => {
-        submitBtn.disabled = true;
-        submitBtn.style.backgroundColor = "#aaa";
+        submitBtn.style.display = 'none';
         summarizePDF(file, fileId);
       });
     }
@@ -749,11 +758,6 @@
     
     /********************************************************************
      * Summarization & JSON Parsing
-     * 
-     * The prompt now instructs the AI to structure the summary based on
-     * the original document's headers/sub-headers, if present.
-     * The Proceed button is shown after extraction; the View Summary
-     * button appears only when the API call finishes.
      ********************************************************************/
     async function summarizePDF(file, fileId) {
       const progressBar = document.getElementById('progress-' + fileId);
@@ -761,7 +765,6 @@
       const fileItem = document.getElementById(fileId);
       const buttonContainer = fileItem.querySelector('.button-container');
       
-      // Show spinner immediately when Submit is clicked.
       let initialSpinner = document.createElement("div");
       initialSpinner.className = "spinner";
       buttonContainer.appendChild(initialSpinner);
@@ -787,24 +790,19 @@
         
         filesData[fileId] = { file: file, originalText: cleanedText };
         
-        // Remove spinner when extraction is complete.
         initialSpinner.remove();
     
-        // Show the Proceed button and keep the View Summary button hidden.
         let proceedBtn = document.getElementById(`proceed-btn-${fileId}`);
         summaryBtn.style.display = "none";
         proceedBtn.style.display = "inline-block";
-        proceedBtn.disabled = false;
     
-        // Wait for the user to click the "Proceed" button.
         proceedBtn.addEventListener("click", async function onProceed() {
+          proceedBtn.style.display = "none";
           proceedBtn.removeEventListener("click", onProceed);
-          proceedBtn.disabled = true;
           let proceedSpinner = document.createElement("div");
           proceedSpinner.className = "spinner";
           buttonContainer.appendChild(proceedSpinner);
     
-          // Enhanced prompt: instruct the AI to use original headers if available.
           const prompt = `Generate an extremely detailed, structured summary of the following PDF content. Divide the summary into multiple sections; if a section is large, subdivide it into subsections. If the original document contains clearly labeled section headers or sub-headers (for example, "Introduction", "Literature Review", etc.), organize the summary according to those headers. For each section or subsection, include a header, well-formatted content (using bullet points, paragraphs, etc.), and a "page" field indicating the approximate page number from the original PDF where that content appears (except for the Analysis section). Output the summary as valid JSON strictly following this format (and nothing else):
 
 {
@@ -873,7 +871,6 @@ ${cleanedText}`;
           filesData[fileId].summary = structuredSummary;
     
           proceedSpinner.remove();
-          // Now, show the View Summary button after the AI summarization is finished.
           summaryBtn.style.display = "inline-block";
           summaryBtn.disabled = false;
           summaryBtn.addEventListener('click', () => showSummaryPage(fileId));
@@ -886,7 +883,7 @@ ${cleanedText}`;
     }
     
     /********************************************************************
-     * PDF Rendering & Smooth Zoom Controls
+     * PDF Rendering & Gesture-Based Zoom Controls
      ********************************************************************/
     async function renderPDFPages(file, container, scale) {
       container.innerHTML = "";
@@ -900,7 +897,6 @@ ${cleanedText}`;
         const canvas = document.createElement("canvas");
         canvas.id = "pdf-page-" + i;
         canvas.style.marginBottom = "10px";
-        // Add smooth transform transition
         canvas.style.transition = "transform 0.3s ease";
         canvas.width = viewport.width;
         canvas.height = viewport.height;
@@ -919,7 +915,6 @@ ${cleanedText}`;
     /********************************************************************
      * Content Formatting Helpers
      ********************************************************************/
-    // Updated formatContent function to handle undefined text.
     function formatContent(text) {
       if (!text) return "";
       const lines = text.split('\n');
@@ -940,7 +935,6 @@ ${cleanedText}`;
       return html;
     }
     
-    // Generates HTML for the detailed summary view.
     function generateDetailedSummaryHTML(summary) {
       let html = `<h2>${summary.title}</h2>`;
       summary.sections.forEach((section, index) => {
@@ -951,7 +945,6 @@ ${cleanedText}`;
         html += `<div class="section" data-index="${index}">
           <h3>${toggle}${section.header}</h3>
           <div class="section-content">${formatContent(section.content)}</div>`;
-        // For non-Analysis sections without subsections, show approximate page link.
         if (section.header.toLowerCase() !== "analysis" && section.page && (!section.subsections || section.subsections.length === 0)) {
           html += `<p><em>Approximate page: <a class="page-link" href="#" onclick="navigateToPage(${section.page}); return false;">${section.page}</a></em></p>`;
         }
@@ -973,7 +966,6 @@ ${cleanedText}`;
       return html;
     }
     
-    // Generates a nicely formatted HTML document for Word output.
     function generateWordDocumentHTML(summary) {
       let html = `
       <html>
@@ -1035,7 +1027,6 @@ ${cleanedText}`;
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      // Use the summary title (which includes the PDF's file name) for the download name.
       a.download = summary.title.replace(/\s+/g, '_') + ".doc";
       document.body.appendChild(a);
       a.click();
@@ -1044,39 +1035,65 @@ ${cleanedText}`;
     }
     
     /********************************************************************
-     * Display Summary and PDF Viewer with Zoom Controls & Chatbot
+     * Display Summary and PDF Viewer (Full-page Flex Layout with Smooth Transitions)
      ********************************************************************/
     async function showSummaryPage(fileId) {
       const data = filesData[fileId];
       if (!data) return;
+      // Hide header and info button for a cleaner summary page
       document.querySelector("header").style.display = "none";
+      document.getElementById("info-button").style.display = "none";
       currentDocumentOriginalText = data.originalText;
       
+      // Hide main page and build the summary page using the entire page as container
       mainPage.style.display = 'none';
-      summaryPage.style.display = 'block';
-      
-      let summaryLeftHTML = generateDetailedSummaryHTML(data.summary);
-      summaryLeftHTML += `
-        <div class="summary-controls">
-          <button id="download-word" class="btn">Download as Word</button>
-        </div>`;
-      
-      summaryContent.innerHTML = `
-        <div class="summary-container">
-          <div class="summary-left">${summaryLeftHTML}</div>
-          <div class="summary-right">
-            <div class="zoom-controls">
-              <button id="zoom-in">Zoom In</button>
-              <button id="zoom-out">Zoom Out</button>
-            </div>
+      summaryPage.classList.add("flex");
+      summaryPage.style.display = 'flex';
+      summaryPage.innerHTML = `
+        <button id="back-button" class="btn">← Back to Files</button>
+        <div class="summary-left">
+          ${generateDetailedSummaryHTML(data.summary)}
+          <div class="summary-controls">
+            <button id="download-word" class="btn">Download as Word</button>
+          </div>
+        </div>
+        <div class="summary-right">
+          <div id="pdf-viewer-wrapper">
             <div id="pdf-viewer-container"></div>
           </div>
-        </div>`;
+        </div>
+      `;
+      summaryPage.classList.add("fade-in");
+      setTimeout(() => { summaryPage.classList.remove("fade-in"); }, 600);
       
       const pdfViewerContainer = document.getElementById('pdf-viewer-container');
+      const pdfViewerWrapper = document.getElementById('pdf-viewer-wrapper');
+      
+      // Initial render of the PDF pages
       renderPDFPages(data.file, pdfViewerContainer, pdfScale);
       
-      // Toggle behavior for sections with subsections.
+      // Set up gesture-based zooming for Mac/trackpad users:
+      let initialScale = pdfScale;
+      pdfViewerWrapper.addEventListener('gesturestart', function(e) {
+        e.preventDefault();
+        initialScale = pdfScale;
+      });
+      pdfViewerWrapper.addEventListener('gesturechange', function(e) {
+        e.preventDefault();
+        pdfScale = initialScale * e.scale;
+        renderPDFPages(data.file, pdfViewerContainer, pdfScale);
+      });
+      
+      // Also allow zooming via ctrl+wheel (common on many systems)
+      pdfViewerWrapper.addEventListener('wheel', function(e) {
+        if (e.ctrlKey) {
+          e.preventDefault();
+          pdfScale += (e.deltaY < 0 ? 0.1 : -0.1);
+          pdfScale = Math.max(0.1, pdfScale);
+          renderPDFPages(data.file, pdfViewerContainer, pdfScale);
+        }
+      });
+      
       document.querySelectorAll('.section').forEach(sectionElem => {
         const subsectionsDiv = sectionElem.querySelector('.subsections');
         if (subsectionsDiv) {
@@ -1085,24 +1102,6 @@ ${cleanedText}`;
           header.addEventListener('click', () => {
             subsectionsDiv.style.display = (subsectionsDiv.style.display === "none" ? "block" : "none");
           });
-        }
-      });
-      
-      document.getElementById('zoom-in').addEventListener('click', () => {
-        pdfScale += 0.2;
-        renderPDFPages(data.file, pdfViewerContainer, pdfScale);
-      });
-      document.getElementById('zoom-out').addEventListener('click', () => {
-        if (pdfScale > 0.4) { pdfScale -= 0.2; }
-        renderPDFPages(data.file, pdfViewerContainer, pdfScale);
-      });
-      
-      pdfViewerContainer.addEventListener('wheel', function(e) {
-        if (e.ctrlKey) {
-          e.preventDefault();
-          pdfScale += (e.deltaY < 0 ? 0.1 : -0.1);
-          pdfScale = Math.max(0.1, pdfScale);
-          renderPDFPages(data.file, pdfViewerContainer, pdfScale);
         }
       });
       
@@ -1115,14 +1114,22 @@ ${cleanedText}`;
       document.getElementById('download-word').onclick = () => { downloadFormattedSummary(summary, "word"); };
     }
     
-    backButton.addEventListener('click', () => {
-      summaryPage.style.display = 'none';
-      mainPage.style.display = 'block';
-      document.querySelector("header").style.display = "block";
-      const chatbotToggle = document.getElementById('chatbot-toggle');
-      const chatbotContainer = document.getElementById('chatbot-container');
-      if (chatbotToggle) chatbotToggle.style.display = 'none';
-      if (chatbotContainer) chatbotContainer.classList.remove("visible");
+    // Back button: immediately transition back to the main page without a blinking animation
+    document.addEventListener('click', function(e) {
+      if(e.target && e.target.id === 'back-button'){
+        summaryPage.classList.add("fade-out");
+        setTimeout(() => {
+          summaryPage.style.display = 'none';
+          mainPage.style.display = 'block';
+          document.querySelector("header").style.display = "flex";
+          document.getElementById("info-button").style.display = "flex";
+          const chatbotToggle = document.getElementById('chatbot-toggle');
+          const chatbotContainer = document.getElementById('chatbot-container');
+          if (chatbotToggle) chatbotToggle.style.display = 'none';
+          if (chatbotContainer) chatbotContainer.classList.remove("visible");
+          summaryPage.classList.remove("fade-out");
+        }, 300);
+      }
     });
     
     /********************************************************************
@@ -1243,7 +1250,7 @@ ${cleanedText}`;
       const computed = totalTokenLimit - conversationTokens - bufferTokens;
       const maxCompletionTokens = computed > 1000 ? Math.min(computed, 100000) : 1000;
       
-      const typingElem = appendChatMessage("bot", "AI is typing...", "typing");
+      const typingElem = appendChatMessage("bot", "DocSleuth is thinking...", "typing");
       
       try {
         const response = await fetch("https://api.openai.com/v1/chat/completions", {
