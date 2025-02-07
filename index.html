@@ -874,6 +874,16 @@ ${cleanedText}`;
           summaryBtn.style.display = "inline-block";
           summaryBtn.disabled = false;
           summaryBtn.addEventListener('click', () => showSummaryPage(fileId));
+    
+          // --- NEW DOWNLOAD BUTTON ---
+          const downloadBtn = document.createElement("button");
+          downloadBtn.id = `download-btn-${fileId}`;
+          downloadBtn.className = "btn";
+          downloadBtn.style.display = "inline-block";
+          downloadBtn.innerHTML = "📥 Download";
+          downloadBtn.addEventListener('click', () => downloadFormattedSummary(filesData[fileId].summary, "word"));
+          buttonContainer.appendChild(downloadBtn);
+          // --- END NEW DOWNLOAD BUTTON ---
         });
       } catch (error) {
         console.error("Error processing PDF:", error);
@@ -940,6 +950,7 @@ ${cleanedText}`;
       summary.sections.forEach((section, index) => {
         let toggle = "";
         if (section.subsections && Array.isArray(section.subsections) && section.subsections.length > 0) {
+          // Default toggle icon is "▼" (expanded)
           toggle = `<span class="toggle-icon">▼</span>`;
         }
         html += `<div class="section" data-index="${index}">
@@ -1094,13 +1105,24 @@ ${cleanedText}`;
         }
       });
       
+      // Set up the toggle behavior for subsections:
       document.querySelectorAll('.section').forEach(sectionElem => {
         const subsectionsDiv = sectionElem.querySelector('.subsections');
         if (subsectionsDiv) {
           const header = sectionElem.querySelector('h3, h2');
           header.style.cursor = "pointer";
           header.addEventListener('click', () => {
-            subsectionsDiv.style.display = (subsectionsDiv.style.display === "none" ? "block" : "none");
+            // If the subsections are hidden (or no explicit display style), show them and update icon to "▼"
+            if (subsectionsDiv.style.display === "none" || subsectionsDiv.style.display === "") {
+              subsectionsDiv.style.display = "block";
+              const toggleIcon = header.querySelector('.toggle-icon');
+              if (toggleIcon) toggleIcon.textContent = "▼";
+            } else {
+              // Otherwise, hide them and update the icon to "▶"
+              subsectionsDiv.style.display = "none";
+              const toggleIcon = header.querySelector('.toggle-icon');
+              if (toggleIcon) toggleIcon.textContent = "▶";
+            }
           });
         }
       });
